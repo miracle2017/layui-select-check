@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" href="./layui-v2.3.0/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+        <form class="layui-form form-container">
+        <div class="layui-form-item">
+            <label class="layui-form-label">城市</label>
+            <div class="layui-input-inline">
+                <div class="layui-unselect layui-form-select">
+                    <div class="layui-select-title" onclick="toggle(this)">
+                        <input type="text" placeholder="请选择" value="" readonly="true" class="layui-input layui-unselect layui-elip">
+                        <i class="layui-edge"></i>
+                    </div>
+                    <dl class="layui-anim layui-anim-upbit">
+                        <dd class="remove-hover-cursor">
+                            <input type="checkbox" name="coincate[0]" title="北京" lay-skin="primary"/>
+                        </dd>
+                        <dd class="remove-hover-cursor">
+                            <input type="checkbox" name="coincate[1]" title="上海" lay-skin="primary"/>
+                        </dd>
+                        <dd class="remove-hover-cursor">
+                            <input type="checkbox" name="coincate[2]" title="福建" lay-skin="primary"/>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">方向</label>
+            <div class="layui-input-inline">
+                <div class="layui-unselect layui-form-select">
+                    <div class="layui-select-title" onclick="toggle(this)">
+                        <input type="text" placeholder="请选择" value="" readonly="true" class="layui-input layui-unselect layui-elip">
+                        <i class="layui-edge"></i>
+                    </div>
+                    <dl class="layui-anim layui-anim-upbit">
+                        <dd class="remove-hover-cursor">
+                            <input type="checkbox" name="block[0]" title="东" lay-skin="primary"/>
+                        </dd>
+                        <dd class="remove-hover-cursor">
+                            <input type="checkbox" name="block[0]" title="西" lay-skin="primary"/>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+</body>
+<style>
+    /*去除鼠标滑过的效果*/
+    .remove-hover-cursor {
+        background-color: initial !important;
+        cursor: initial !important;
+    }
+
+    /*覆盖layui.css相同的样式,消除复选框的打勾不居中怪异样式*/
+    .layui-form-checkbox[lay-skin=primary] i {
+        width: 16px;
+        line-height: 16px;
+    }
+</style>
+<script src="./layui-v2.3.0/layui/layui.js"></script>
+<script>
+    layui.use(['form', 'element'], function () {
+        let form = layui.form;
+        $ = layui.$;
+        form.on('checkbox()', function (data) {
+            let value = getCheckbox();
+            $(".layui-form-selected .layui-select-title input")[0].value = value.join(", ");
+        });
+
+        // 获取下拉复选框的选中值, return Array
+        function getCheckbox() {
+            let list = $(".layui-form-selected .layui-form-checked");
+            let checkeds = [];
+            $.each(list, function (key, data) {
+                checkeds.push(data.innerText);
+            });
+            return checkeds;
+        }
+    });
+
+    document.addEventListener('click', function(e){
+        result = $(e.target).parents('.layui-form-selected');
+        if(result.length === 0) {
+            $('.layui-form-selected').each(function (index) {
+                $(this).removeClass('layui-form-selected');
+            })
+        }
+    }, true);
+
+    //下拉复选框的显示或收起
+    function toggle(currentNode){
+        let parent = currentNode.parentNode;
+        if (parent.classList.contains('layui-form-selected')) {
+            parent.classList.remove('layui-form-selected');
+        } else {
+            parent.classList.add('layui-form-selected');
+        }
+    }
+</script>
+</html>
